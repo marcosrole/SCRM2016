@@ -1,0 +1,9 @@
+ge="$(string.RunOobeLdr.StartMessage)" opcode="win:Start" symbol="RunOobeLdrStart" task="tskRunOobeLdr" template="tidCommandLine" value="1001"></event>
+					<event channel="chaOobeLdrAnalytic" keywords="keyPerformance ms:Telemetry" level="win:Informational" message="$(string.RunOobeLdr.StopMessage)" opcode="win:Stop" symbol="RunOobeLdrStop" task="tskRunOobeLdr" template="tidErrorCodeResult" value="1002"></event>
+					<!-- OobeLdr Process Unattend -->
+					<event channel="chaOobeLdrAnalytic" keywords="keyPerformance ms:Telemetry" level="win:Informational" message="$(string.OobeLdrProcessUnattend.StartMessage)" opcode="win:Start" symbol="OobeLdrProcessUnattendStart" task="tskOobeLdrProcessUnattend" template="tidOobeLdrProcessUnattend" value="2001"></event>
+					<event channel="chaOobeLdrAnalytic" keywords="keyPerformance ms:Telemetry" level="win:Informational" message="$(string.OobeLdrProcessUnattend.StopMessageExecuted)" opcode="win:Stop" symbol="OobeLdrProcessUnattendStopExecuted" task="tskOobeLdrProcessUnattend" template="tidErrorCodeResult" value="2002"></event>
+					<event channel="chaOobeLdrAnalytic" keywords="keyPerformance ms:Telemetry" level="win:Informational" message="$(string.OobeLdrProcessUnattend.StopMessageFailedToExecute)" opcode="win:Stop" symbol="OobeLdrProcessUnattendStopFailedToExecute" task="tskOobeLdrProcessUnattend" template="tidErrorCodeResult" value="2003"></event>
+					<event channel="chaOobeLdrAnalytic" keywords="keyDiagnostic ms:Telemetry" level="win:Informational" message="$(string.OobeLdrProcessUnattend.UsingFile)" opcode="win:Info" symbol="OobeLdrProcessUnattendUsingFile" task="tskOobeLdrProcessUnattend" template="tidOobeLdrUsingUnattend" value="2004"></event>
+					<!-- Launch Oobe -->
+					<event channel="chaOobeLdrAnalytic" keywords="keyPerformance ms:Telemetry" level="win:Informational" message="$(string.LaunchOobe.StartMessage)" opcode="win:Start" symbol="LaunchOobeStart" task="tskLaunchOobe" va
