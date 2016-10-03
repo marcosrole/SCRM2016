@@ -38,9 +38,8 @@
 /* @var $model Histoasignacion */
 
 $this->breadcrumbs=array(
-	'Histoasignacions'=>array('index'),
-//	$model->id=>array('view','id'=>$model->id),
-	'Update',
+    'Dispositivos'=>array('list'),
+    'Modificar asignaciones realizadas',
 );
 
 $this->menu=array(

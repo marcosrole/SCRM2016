@@ -21,6 +21,11 @@
         
 );
 
+$this->breadcrumbs=array(
+    'Dispositivos'=>array('list'),
+	'Habilitar Dispositivos',
+);
+
 ?>
 
 

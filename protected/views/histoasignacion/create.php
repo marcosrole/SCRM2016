@@ -21,6 +21,13 @@ $this->menu=array(
 	array('label'=>'Administrar Empresas', 'url'=>array('update')),
         array('label'=>'Crear Sucursal', 'url'=>array('sucursal/create')),
 );
+
+
+$this->breadcrumbs=array(
+    'Dispositivos'=>array('list'),
+    'Asignar dispositivo a una sucursal',
+);
+
 ?>
 
 

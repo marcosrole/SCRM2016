@@ -19,8 +19,8 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Empresa */
 
 $this->breadcrumbs=array(
-	'Empresas'=>array('index'),
-	'Create',
+    'Empresa'=>array('list'),
+    'Crear nueva empresa',
 );
 
 $this->menu=array(

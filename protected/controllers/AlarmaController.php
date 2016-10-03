@@ -84,7 +84,7 @@ class AlarmaController extends Controller
             $fechahoy=$hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday'];
             $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds']; 
             $Alarmas = Alarma::model()->findAllByAttributes(array('solucionado'=>'0','preAlarma'=>'0'), array('order'=>'fechahs ASC'));
-            var_dump($Alarmas); die();
+            
             if(count($Alarmas)!=0){
                 foreach($Alarmas as $item=>$alarma){
                     $existe=Asignarinspector::model()->findAllByAttributes(array('id_ala'=>$alarma{'id'}));

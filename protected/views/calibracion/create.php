@@ -17,8 +17,8 @@
 /* @var $model Calibracion */
 
 $this->breadcrumbs=array(
-	'Calibracions'=>array('index'),
-	'Create',
+    'Dispositivos'=>array('dispositivo/list'),
+	'Calibrar dispositivo',
 );
 
 $this->menu=array(

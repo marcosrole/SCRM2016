@@ -34,8 +34,8 @@
 /* @var $model DetalleDispo */
 
 $this->breadcrumbs=array(
-	'Detalle Dispos'=>array('index'),
-	'Create',
+    'Dispositivos'=>array('list'),
+    'Crear nuevo dispositivo',
 );
 
 $this->menu=array(

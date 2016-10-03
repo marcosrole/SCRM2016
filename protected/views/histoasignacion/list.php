@@ -3,8 +3,8 @@
 /* @var $model Histoasignacion */
 
 $this->breadcrumbs=array(
-	'Histoasignacions'=>array('index'),
-	
+    'Dispositivos'=>array('list'),
+    'Histórico de asignaciones realizadas',
 );
 
 $this->menu=array(

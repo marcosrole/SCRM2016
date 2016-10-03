@@ -440,7 +440,7 @@ class DetalleDispoController extends Controller
         return $id_ala;
     }
     
-    public function VerificarDispositivoMuerto($tiempoTolerancia, $recibirAlaMuerto, $preAlarma, $id_ala=null){
+    public function actionVerificarDispositivoMuerto($tiempoTolerancia=300, $recibirAlaMuerto=300, $preAlarma=1, $id_ala=null){
         $ExistePREAlarma = false;
         $alarmasGeneradas=array();
        
@@ -494,6 +494,7 @@ class DetalleDispoController extends Controller
                     if(count($UltimosAccesos)>1){
                         var_dump("2");
                          foreach ($UltimosAccesos as $item=>$value){
+                             
                             //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
                              if(abs(strtotime($fechahoy)-strtotime($value{'fechaUltimo'}))<=86400){ //Pertenece al mismo dia
                                  if(abs($this->actionRestarHoras($hshoy, $value{'hsUltimo'}))>=$tiempoTolerancia){
@@ -503,7 +504,7 @@ class DetalleDispoController extends Controller
                                   $dispoMuerto[]=$value{'id_dis_detDis'};
                              }            
                          }   
-                        
+                         
                          if(count($dispoMuerto)!=0){
                              if(count($dispoMuerto)>1){//Genero tantas alarmas como dispositivos muertos halla
                                  foreach ($dispoMuerto as $item1 => $value1){
@@ -791,7 +792,7 @@ public function Sendemail($id_alarma, $emailDestino){
     public function actionValidarEstado(){
         $ConfigAlarma = Configalarma::model()->find();
         
-        if(0){//Validar dispositivo Muerto                
+        if(1){//Validar dispositivo Muerto                
            $this->VerificarDispositivoMuerto($ConfigAlarma{'segMuerto'},$ConfigAlarma{'recibirAlaMuerto'},1);
         } 
         

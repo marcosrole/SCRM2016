@@ -15,9 +15,19 @@
         ));
         ?>
 
+
+<?php 
+
+$this->breadcrumbs=array(
+	'Dispositivos almacenados',
+);
+
+?>
+
 <?php $this->menu=array(
 	array('label'=>'Cargar Dispositivo', 'url'=>array('dispositivo/create')),	
         array('label'=>'Calibrar Dispositivo', 'url'=>array('calibracion/create?id_disp')),
+    
         
 );
 

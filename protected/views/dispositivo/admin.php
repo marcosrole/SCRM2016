@@ -27,9 +27,13 @@
         ));
         ?>
 <?php
-/* @var $this DispositivoController */
-/* @var $model Dispositivo */
+$this->breadcrumbs=array(
+    'Dispositivos'=>array('list'),
+    'Editar valores de los dispositivos',
+);
 ?>
+        
+        
 
 <h1>Dispositivos Almacenados</h1>
 

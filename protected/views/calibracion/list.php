@@ -21,6 +21,11 @@ $this->menu=array(
 	array('label'=>'Calibrar Dispositivo', 'url'=>array('calibracion/create?id_disp')),
 	
 );
+
+$this->breadcrumbs=array(
+	'Listar dispositivos calibrados',
+);
+
 ?>
 
 <h1>Calibraciones de dispositivos <?php ?></h1>
