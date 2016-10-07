@@ -252,8 +252,13 @@ class AsignarinspectorController extends Controller
                    
                    foreach ($asingaciones as $item){   
                        $asignacion = Asignarinspector::model()->findByAttributes(array('id'=>$item));
-                       $inspector = Inspector::model()->findByAttributes(array('id'=>$asignacion{'id_ins'}));
-                       $inspector->estoyLibre($inspector{'id'});
+                            $inspector = Inspector::model()->findByAttributes(array('id'=>$asignacion{'id_ins'}));
+                            $inspector{'ocupado'}=0;
+                            $inspector->save();
+                            
+                            $alarma = Alarma::model()->findByAttributes(array('id'=>$asignacion{'id_ala'}));
+                            $alarma{'preAlarma'}=0;
+                            $alarma->save();                        
                        $asignacion->delete(); 
                         Yii::app()->user->setFlash('success', "<strong>Registro !</strong>  ");
                        

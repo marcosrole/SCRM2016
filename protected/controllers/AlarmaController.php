@@ -118,7 +118,8 @@ class AlarmaController extends Controller
                         
                         $inspector->estoyOcupado($asignarInspectorModelo{'id_ins'},date("Y-m-d H:i:s"));                                
                         
-                        $alarma->preAlarma='-1';
+                        $alarma{'preAlarma'}='-1';
+                        
                         $alarma->save();
                         
                                                 

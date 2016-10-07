@@ -98,7 +98,8 @@ and open the template in the editor.
                     //Si existe,=> FIRE
                     //Sino => DRINK
                     
-                    $alarma = Alarma::model()->findByAttributes(array('id_dis'=>$value[0], 'solucionado'=>0, 'preAlarma'=>1));
+                    $alarma = Alarma::model()->findByAttributes(array('id_dis'=>$value[0], 'solucionado'=>0, 'preAlarma'=>0));
+                    
                     
                     if($alarma!=null){
                         $icon = new EGMapMarkerImage("http://" . $_SERVER['HTTP_HOST'] . "/SCRM/images/googlemap/fire.png");

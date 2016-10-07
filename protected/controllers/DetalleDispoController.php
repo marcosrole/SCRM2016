@@ -133,11 +133,13 @@ class DetalleDispoController extends Controller
                             $Sucursal = Sucursal::model()->findByAttributes(array('id'=>$HistoAsignacion{'id_suc'}));
                             $direccion = Direccion::model()->findByAttributes(array('id'=>$Sucursal{'id_dir'}));
                             $mensaje= "SCRM: Se ha detectado un inconveniente en " . $Sucursal{'nombre'} . ", " . $direccion{'calle'} . " " . $direccion{'altura'} . ", debido a: ";
-                           
+                            
                             $id_alaRC=$this->VerificarRuidoContinua($_GET['id'], $Calibracion{'db_permitido'},$ConfigAlarma{'segCont'},20, $ConfigAlarma{'porcCont'}, $ConfigAlarma{'recibirAlaContinuo'},1);
-                            if($id_alaRC=='-1'){       
+                            
+                            if($id_alaRC==NULL){       
                                         $id_alaRI =$this->VerificarRuidoIntermedio($_GET['id'],$Calibracion{'db_permitido'},$ConfigAlarma{'segInt'},20,$ConfigAlarma{'porcInt'}, $ConfigAlarma{'division'}, $ConfigAlarma{'recibirAlaIntermitente'}, 1);
-                                        if($id_alaRI!='-1'){
+                                        
+                                        if($id_alaRI!=NULL){
                                                     $alarmaDetectada=true;
                                                     $this->EnviarSMSEncargado($id_alaRI, $mensaje . "Ruidos Molestos" . ". Por favor solucione el inconveniente durante los proximos " . round($ConfigAlarma{'tolResponsable'}/60) . "minutos. ");
                                         }             
@@ -292,7 +294,7 @@ class DetalleDispoController extends Controller
     }
     
     public function VerificarRuidoIntermedio($id_dis, $dbPermitido, $segInter, $envioDatos, $porcInt, $divisiones, $tolRuidoIntermedio,$preAlarma, $id_ala=null){
-    if($id_ala==NULL)$id_ala=-1;
+    
 //    $segInter = 600; //Definicion de un ruido Intermedio (debe existir durante -ej-, 600 seg. = 10 min)
 //    $envioDatos = 20; //segundos. Cada cuanto envia datos el dispositivo.
 //    $porcInt = 0.5; //Tolerancia al momento de comparar el promedio de todos los registros
@@ -326,7 +328,7 @@ class DetalleDispoController extends Controller
                     if($LisDetalleDispo[$i]>$porcInt) $genererRuidoIntermedio=true;
                 }
 
-                if($id_ala!=null){
+                if($id_ala!=NULL){
                     $alarma = Alarma::model()->findByAttributes(array('id'=>$id_ala));
                     if($genererRuidoIntermedio){
                         if($this->PermitirGenerarAlarma($id_dis, 4, $tolRuidoIntermedio,$preAlarma,$alarma{'id'})){//ALARMA INTERMITENTE   18000seg=5 mintos
@@ -343,14 +345,11 @@ class DetalleDispoController extends Controller
             }
      }
     
-    
-    
-    RETURN $genererRuidoIntermedio;    
+    return $id_ala;
 }
 
     public function VerificarRuidoContinua($id_dis, $db_permitido,$segCont, $envioDatos, $porcCont, $recibirAlaContinua, $preAlarma, $id_ala=NULL){
         
-        if($id_ala==NULL)$id_ala=-1;
 //        ********** ALARMA CONTINUA ****************
         //Determino cuantos detalleDispo necesito:
         $existeRuidoContinuo=false;
@@ -368,9 +367,10 @@ class DetalleDispoController extends Controller
             //Cuento cuantos registros se pasaron del limite de aceptacion
             if($value{'db'}>=$db_permitido) $contadorLimite++;
         }
-       
+        
         //Determino porcentaje de aceptacion
         if($contadorLimite/$cantDetalleDispo>=$porcCont){
+            
             //GENERO ALARMA CONTINUA
 //                ********************************
              if($id_ala!=null){
@@ -378,27 +378,30 @@ class DetalleDispoController extends Controller
                 if($this->PermitirGenerarAlarma($id_dis, 3, $recibirAlaContinua,$preAlarma,$alarma{'id'})){//ALARMA CONTINUA   18000seg=5 mintos
                     $id_ala=$this->GenerarAlarmaContinua($id_dis,3,$preAlarma,$alarma{'id'});
                     $existeRuidoContinuo=true;
+                    
                }
             }else{
-                if($this->PermitirGenerarAlarma($id_dis, 3, $recibirAlaContinua,$preAlarma)){//ALARMA CONTINUA   18000seg=5 mintos
-                    $id_ala=$this->GenerarAlarmaContinua($id_dis,3,$preAlarma);
+                if($this->PermitirGenerarAlarma($id_dis, 3, $recibirAlaContinua,$preAlarma)){//ALARMA CONTINUA   18000seg=5 mintos                    
+                    $id_ala=$this->GenerarAlarmaContinua($id_dis,3,$preAlarma);                    
                     $existeRuidoContinuo=true;
                }
             }
             
         }else{//Si la alarma se ha solucionado por el propio dueño. ELIMMINO LA PRE ALARMA
-            if($id_ala!=null){                
+            if($id_ala!=NULL){     
+                
                 Alarma::model()->setSolucionada($id_ala);
             }
         }
+        
+        //if($id_ala==NULL)$id_ala=-1;
         
         return $id_ala;
     }
     
      public function VerificarDistancia($id_dis, $dist_permitido, $segDis, $envioDatos, $porcDis, $recibirAlaDistancia, $preAlarma, $id_ala=null ){
          
-         if($id_ala==NULL)$id_ala=-1;
-        
+         
 //        ********** ALARMA DE DISTANCIA ****************
         //Determino cuantos detalleDispo necesito:
         $existeAlarmaDistancia=false;
@@ -440,7 +443,7 @@ class DetalleDispoController extends Controller
         return $id_ala;
     }
     
-    public function actionVerificarDispositivoMuerto($tiempoTolerancia=300, $recibirAlaMuerto=300, $preAlarma=1, $id_ala=null){
+    public function VerificarDispositivoMuerto($tiempoTolerancia, $recibirAlaMuerto, $preAlarma, $id_ala=null){
         $ExistePREAlarma = false;
         $alarmasGeneradas=array();
        
@@ -663,7 +666,7 @@ public function GenerarAlarmaContinua($id_dis, $tipoAlarma, $preAlarma, $id_ala=
         return $Alarma{'id'};
 }
 
-public function PermitirGenerarAlarma($id_dis, $id_tipAla, $recibirAlarmaTiempo, $preAlarma, $id_ala=null){
+public function PermitirGenerarAlarma($id_dis, $id_tipAla, $recibirAlarmaTiempo, $preAlarma, $id_ala=NULL){
     /* Verifica el perioro de tiempo que transcurrio luego de la ultima alarma.
      * Teniendo en cuenta: id_dis y id_tipAla */
 //        $tiempoTolerancia = Es la tolerancia de tiempo entre alarmas. EN SEGUNDOS 
@@ -703,15 +706,14 @@ public function PermitirGenerarAlarma($id_dis, $id_tipAla, $recibirAlarmaTiempo,
             date_default_timezone_set('America/Buenos_Aires');
             $hoy = getdate();            
              $fechahoy=$hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday'];
-             $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds'];            
+             $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds'];                         
             //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
             if(abs(strtotime($fechahs[0])-strtotime($fechahoy))<=86400){ //Pertenece al mismo dia
-                if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$recibirAlarmaTiempo){
+                if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$recibirAlarmaTiempo){                    
                     $generarAlarma = TRUE;
                 }
             }else  $generarAlarma = TRUE;
     }             
-    
     
     
     return $generarAlarma;        
@@ -805,25 +807,25 @@ public function Sendemail($id_alarma, $emailDestino){
             $tiempoEsperaAgotado = false;
             //Busco la pre-alrma mas vieja para verificar el tiempo que transcurrio hasta el momento
             $PREalarmas = Alarma::model()->findAllByAttributes(array('preAlarma'=>'1'), array('order'=>'fechahs ASC'));
-            
+                        
             if(count($PREalarmas)>=1){
-                $PREAlarmaOld = $PREalarmas[0];
                 
-                $fechahs=explode(" ", $PREAlarmaOld['fechahs']);
-                date_default_timezone_set('America/Buenos_Aires');
-                $hoy = getdate();
+                foreach($PREalarmas as $item=>$valor){                    
+                    $PREAlarmaOld = $valor;                
+                    $fechahs=explode(" ", $PREAlarmaOld['fechahs']);
+                    date_default_timezone_set('America/Buenos_Aires');
+                    $hoy = getdate();
 
-                 $fechahoy=$hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday'];
-                 $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds'];
-                //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
-                if(abs(strtotime($fechahs[0])-strtotime($fechahoy))<=86400){ //Pertenece al mismo dia
-                    if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$ConfigAlarma{'tolResponsable'}){
-                        $tiempoEsperaAgotado = TRUE;
-                    }
-                }else  $tiempoEsperaAgotado = TRUE;
-            }
-            
-                if($tiempoEsperaAgotado){
+                     $fechahoy=$hoy['year'] . "-" . $hoy['mon'] . "-" . $hoy['mday'];
+                     $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds'];
+                    //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
+                    if(abs(strtotime($fechahs[0])-strtotime($fechahoy))<=86400){ //Pertenece al mismo dia
+                        if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$ConfigAlarma{'tolResponsable'}){
+                            $tiempoEsperaAgotado = TRUE;
+                        }
+                    }else  $tiempoEsperaAgotado = TRUE;
+                    
+                    if($tiempoEsperaAgotado){
                     //Verifico nuevamente la alarma generada.
                     $id_dis=$PREAlarmaOld{'id_dis'};
                     $HistoAsig = Histoasignacion::model()->findByAttributes(array('id_dis'=>$id_dis, 'fechaBaja'=>'1900-01-01')); 
@@ -834,7 +836,7 @@ public function Sendemail($id_alarma, $emailDestino){
                         case 2://Limite de Distancia  segDis = tolResponsable
                             $this->VerificarDistancia($id_dis, $Calibracion{'dist_permitido'}, $ConfigAlarma{'tolResponsable'}, $Dispositivo{'tiempo'}, $ConfigAlarma{'porcDis'}, $ConfigAlarma{'recibirAlaDistancia'},0,$PREAlarmaOld{'id'});                                
                             break;
-                        case 3://Ruido Continuo segCon = tolResponsable
+                        case 3://Ruido Continuo segCon = tolResponsable                            
                             $this->VerificarRuidoContinua($id_dis, $Calibracion{'db_permitido'}, $ConfigAlarma{'tolResponsable'}, $Dispositivo{'tiempo'}, $ConfigAlarma{'porcCont'}, $ConfigAlarma{'recibirAlaContinuo'},0,$PREAlarmaOld{'id'});                                
                             break;
                         case 4://Ruido Intermitente segInt = tolResponsable                           
@@ -848,12 +850,14 @@ public function Sendemail($id_alarma, $emailDestino){
                             break;
                     }
                 }
-            
+                    
+                    
+                    
+                }
+                
+                
+                
+            }
         }
- 
-
     }
-    
-    
-    
 }
