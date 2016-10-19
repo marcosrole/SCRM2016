@@ -11,7 +11,7 @@ and open the template in the editor.
             #page {
                     margin-top: 5px;
                     margin-bottom: 5px;
-                    margin-left: 110px;
+                    //margin-left: 110px;
                     background: white;
             }
             .mapa {
@@ -22,6 +22,7 @@ and open the template in the editor.
                 display: inline-block;
                 width: 40%;
                 float: right;
+                margin-right: 5%
             }
             p {
                 margin: 0 0 10px;

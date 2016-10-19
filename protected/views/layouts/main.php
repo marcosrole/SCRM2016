@@ -347,7 +347,7 @@
             
             <?php if(isset($this->breadcrumbs)):?>
             <?php $this->widget('zii.widgets.CBreadcrumbs', array(
-                'homeLink'=>CHtml::link('Inicio', array('/site/index')),
+                'homeLink'=>CHtml::link('Inicio', array('site/index')),
                 'links'=>$this->breadcrumbs,
             ));?>
 		

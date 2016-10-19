@@ -198,7 +198,7 @@ class UsuarioController extends Controller
                                     }  else {$transaction->rollback (); Yii::app()->user->setFlash('error', "<strong>Error. Rol de Usuario!</strong> Debe asignarle un rol al Usuario");}
                                     
                                     
-                                }else {      die("existe")                              ;
+                                }else { 
                                     $transaction->rollback (); Yii::app()->user->setFlash('error', "<strong>Error!</strong> Ya existe usuario con el mismo nombre");
                                 }                                                                       
                             }else {$transaction->rollback (); Yii::app()->user->setFlash('error', "<strong>Error!</strong> Campos vacios o incorrectos");}                                                
