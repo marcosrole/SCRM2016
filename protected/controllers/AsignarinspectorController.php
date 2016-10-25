@@ -246,7 +246,7 @@ class AsignarinspectorController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		
+            	
                 if(isset($_POST['selectDeleteInspectores'])){
                    $asingaciones = $_POST['selectDeleteInspectores'];
                    
@@ -258,6 +258,16 @@ class AsignarinspectorController extends Controller
                             
                             $alarma = Alarma::model()->findByAttributes(array('id'=>$asignacion{'id_ala'}));
                             $alarma{'preAlarma'}=0;
+                            
+                            //Agrego tiempo adicional: Diferencia entre (AHORA-hs de alarma) + X mminutos
+                            date_default_timezone_set('America/Buenos_Aires');
+                            
+                            $fechahs=explode(" ", $alarma['fechahs']);
+                            $hsAlarma=$fechahs[1];
+                            $hsAhora = date("H:i:s", time());            
+                            $diferenciaSecond = $this->actionRestarHoras($hsAlarma,$hsAhora)+strtotime("1970-01-01 00:00:01 UTC");            
+                            
+                            $alarma{'minutosAdicional'}=gmdate("H:i:s", $diferenciaSecond);
                             $alarma->save();                        
                        $asignacion->delete(); 
                         Yii::app()->user->setFlash('success', "<strong>Registro !</strong>  ");
@@ -338,4 +348,26 @@ class AsignarinspectorController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionRestarHoras($horaini,$horafin)
+        {
+            
+            $horai=explode(":", $horaini)[0];
+            $mini=explode(":", $horaini)[1];
+            $segi=explode(":", $horaini)[2];
+
+            $horaf=explode(":", $horafin)[0];
+            $minf=explode(":", $horafin)[1];
+            $segf=explode(":", $horafin)[2];
+
+            $ini=((($horai*60)*60)+($mini*60)+$segi);
+            $fin=((($horaf*60)*60)+($minf*60)+$segf);
+
+            $dif=$fin-$ini; //diferencia en Segundos
+            return $dif;
+    //	$difh=floor($dif/3600);
+    //	$difm=floor(($dif-($difh*3600))/60);
+    //	$difs=$dif-($difm*60)-($difh*3600);
+    //	return date("H-i-s",mktime($difh,$difm,$difs));
+        }
 }

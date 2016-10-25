@@ -47,8 +47,8 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Alarma */
 
 $this->breadcrumbs=array(
-	'Alarmas'=>array('index'),
-	'Manage',
+	'Listado de Alarmas'=>array('alarma/admin'),
+	'Listado de PreAlarmas',
 );
 
 $this->menu=array(

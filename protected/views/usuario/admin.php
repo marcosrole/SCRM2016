@@ -19,7 +19,7 @@ $this->widget('booster.widgets.TbAlert', array(
 
 $this->breadcrumbs=array(
 	'Usuarios'=>array('index'),
-	'Manage',
+	'Administrar Usuarios',
 );
 
 $this->menu=array(

@@ -190,7 +190,7 @@ class DetalleDispoController extends Controller
         $Empresa = Empresa::model()->findByAttributes(array('cuit'=>$Sucural{'cuit_emp'}));
         $Persona = Persona::model()->findByAttributes(array('dni'=>$Sucural{'dni_per'})); 
         
-        if(0) $this->SendSMS($Persona{'celular'}, $mensaje);               
+        if(1) $this->SendSMS($Persona{'celular'}, $mensaje);               
         if(1) $this->Sendemail($Alarma{'id'},$Persona{'email'});
     }
 
@@ -568,7 +568,7 @@ class DetalleDispoController extends Controller
                                     $alarma->id_dis=$dispoMuerto[0];
                                     $alarma->fechahs=$fechahoy . " " . $hshoy; 
                                     
-                                    $alarmaYaEistente= Alarma::model()->findAllByAttributes(array('solucionado'=>0, 'id_tipAla'=>$alarma{'id_tipAla'}, 'id_dis'=>$alarma{'id_dis'}, 'asignada'=>'0'));
+                                    $alarmaYaEistente= Alarma::model()->findAllByAttributes(array('solucionado'=>0, 'id_tipAla'=>$alarma{'id_tipAla'}, 'id_dis'=>$alarma{'id_dis'}, 'preAlarma'=>'-1'));
                                     
                                     if(count($alarmaYaEistente)==0){var_dump("4"); 
                                         if($this->PermitirGenerarAlarma($alarma{'id_dis'}, 5, $recibirAlaMuerto,$preAlarma)){
@@ -719,7 +719,7 @@ public function PermitirGenerarAlarma($id_dis, $id_tipAla, $recibirAlarmaTiempo,
     return $generarAlarma;        
 }
 
-public function SendSMS($numeroDestino, $mensaje){
+public function actionSendSMS($numeroDestino=3483404260, $mensaje="prueba"){
     
     //Yii::app()->sms->send(array('to'=>"54".$numeroDestino, 'message'=>$mensaje));
     spl_autoload_unregister(array('YiiBase','autoload'));
@@ -793,7 +793,7 @@ public function Sendemail($id_alarma, $emailDestino){
 
     public function actionValidarEstado(){
         $ConfigAlarma = Configalarma::model()->find();
-        
+        var_dump("ValidarEstado()");
         if(1){//Validar dispositivo Muerto                
            $this->VerificarDispositivoMuerto($ConfigAlarma{'segMuerto'},$ConfigAlarma{'recibirAlaMuerto'},1);
         } 
@@ -820,6 +820,25 @@ public function Sendemail($id_alarma, $emailDestino){
                      $hshoy=$hoy['hours'] . ":" . $hoy['minutes'] . ":" . $hoy['seconds'];
                     //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
                     if(abs(strtotime($fechahs[0])-strtotime($fechahoy))<=86400){ //Pertenece al mismo dia
+                        //Si el tiempo de la preAlarma es tres veces el tiempo de la tolerancia del resposable
+                        //Siginifca que la preAlarma ha sido solucionada por el responsable, entonces
+                        //asigno a esa PreAlarma como solucionada.
+                        
+//                        $tiempoResponsable=$ConfigAlarma{'tolResponsable'};
+//                        if((strtotime("1970-01-01 $fechahs[1] UTC")*3 - strtotime("1970-01-01 $tiempoResponsable UTC") ) > $tiempoEsperaAgotado*3){
+//                             $PREAlarmaOld{'solucionado'}='1';
+//                             $PREAlarmaOld->save();
+//                        }else{
+//                            if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$ConfigAlarma{'tolResponsable'}){
+//                                $tiempoEsperaAgotado = TRUE;
+//                            }
+//                        }
+//                        
+//                    }else  {
+//                         $PREAlarmaOld{'solucionado'}='1';
+//                         $PREAlarmaOld->save();
+//                    }
+                        
                         if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$ConfigAlarma{'tolResponsable'}){
                             $tiempoEsperaAgotado = TRUE;
                         }

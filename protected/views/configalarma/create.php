@@ -20,8 +20,7 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Configalarma */
 
 $this->breadcrumbs=array(
-	'Configalarmas'=>array('index'),
-	'Create',
+	'Configurar Parámetros',
 );
 
 $this->menu=array(

@@ -90,10 +90,16 @@ class AlarmaController extends Controller
                     $existe=Asignarinspector::model()->findAllByAttributes(array('id_ala'=>$alarma{'id'}));
                     if(count($existe)==0){
                         $fechahs=explode(" ", $alarma['fechahs']);
+                        
+                        
+                        $time = $alarma['minutosAdicional'];
+                        $time= date('H:i:s',  strtotime($fechahs[1]) + strtotime("1970-01-01 $time UTC"));
+                        
+                       
 
                         //Me fijo si existe una diferencia de al menos un dia. Un dia tiene 86400 segundos 
                         if(abs(strtotime($fechahs[0])-strtotime($fechahoy))<=86400){ //Pertenece al mismo dia
-                            if(abs($this->actionRestarHoras($fechahs[1], $hshoy))>=(float)$tiempoEspera){
+                            if(abs($this->actionRestarHoras($time, $hshoy))>=(float)$tiempoEspera){
                                 $asignarInspector = TRUE; break;
                             }else $asignarInspector=FALSE;
                         }else  $asignarInspector = TRUE; break;

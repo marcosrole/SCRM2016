@@ -20,8 +20,7 @@ $(function() {
 /* @var $model Nivelesmenu */
 
 $this->breadcrumbs=array(
-	'Nivelesmenus'=>array('index'),
-	'Create',
+	'Configurar Niveles de acceso',
 );
 
 $this->menu=array(

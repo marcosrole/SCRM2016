@@ -19,8 +19,8 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Asignarinspector */
 
 $this->breadcrumbs=array(
-	'Asignarinspectors'=>array('index'),
-	'Manage',
+	'Asignaciones Realizadas'=>array('index'),
+	'Eliminar Asignaciones',
 );
 
 $this->menu=array(

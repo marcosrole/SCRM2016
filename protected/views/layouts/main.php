@@ -46,6 +46,7 @@
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
 </style>
 <?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
@@ -70,11 +71,16 @@
         
         
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link href="css/navbar.css" rel="stylesheet">
+        
     </head>
+    
+    
 
     <body>
         
-        <div class="container" id="page">
+        <div class="container" id="page"
+>
             
             <div id="header">
 		<div id="logo"><?php //echo CHtml::encode(Yii::app()->name); ?></div>
@@ -98,10 +104,15 @@
             $asiganciones = Asignarinspector::model()->findAllByAttributes(array('finalizado'=>'0'));
             ?>
           <script type="text/javascript">
+              
+              
+              
+             
+              
               $(document).ready(function(){
                         setInterval(alertFunc, 3000);
                         setInterval(asignarInspector, 3000);
-    //                      setInterval(contarAlarmas, 3000);
+                        setInterval(setValoresNavbar, 3000);
     //                      setInterval(contarPREAlarmas, 3000);
     //                      setInterval(asignarCantAlarmas, 3500);
                 });
@@ -111,7 +122,7 @@
                         url:    '<?php echo Yii::app()->createUrl('DetalleDispo/ValidarEstado'); ?>',
     //                    data:  {val1:1,val2:2},
 
-                        complete: function(msg){                 
+                        complete: function(msg){  
 
                             },
                         error: function(xhr){
@@ -136,50 +147,44 @@
                       });                
                 }
 
-                function contarAlarmas() {
-                    $.ajax({
-                        type: "POST",
-                        url:    '<?php echo Yii::app()->createUrl('site/ContarAlarmas'); ?>',
-    //                    data:  {val1:1,val2:2},
+                             
+                function setValoresNavbar() {
+                    
+                    
+                    <?php $PREalarmas = Alarma::model()->findAllByAttributes(array('solucionado'=>'0', 'preAlarma'=>'1'));?>
+                    <?php $alarmas = Alarma::model()->findAllByAttributes(array('solucionado'=>'0', 'preAlarma'=>'0'));?>
+                    
+                    document.getElementById('itemAlarma').getElementsByTagName('*')[0].innerHTML="";
+                    
+                    var newSpan = document.createElement('span');
+                    newSpan.setAttribute('class', 'glyphicon glyphicon-bell');
+                    
+                    var str = " Alarma (";
+                    
+                    var texto = document.createTextNode(str.concat(<?php echo count($PREalarmas); ?>," / ",<?php echo count($alarmas); ?>,")"));                    
+                    document.getElementById('itemAlarma').getElementsByTagName('*')[0].appendChild(newSpan);
+                    document.getElementById('itemAlarma').getElementsByTagName('*')[0].appendChild(texto);
+                   
+                    
+                    <?php $asiganciones = Asignarinspector::model()->findAllByAttributes(array('finalizado'=>'0'));?>
+                    document.getElementById('itemAsignacion').getElementsByTagName('*')[0].innerHTML="";
+                    
+                    var newSpan = document.createElement('span');
+                    newSpan.setAttribute('class', 'glyphicon glyphicon-download-alt');
+                    
+                    var str = " Alarmas asignadas (";
+                    
+                    var texto = document.createTextNode(str.concat(<?php echo count($asiganciones); ?>,")"));                    
+                    document.getElementById('itemAsignacion').getElementsByTagName('*')[0].appendChild(newSpan);
+                    document.getElementById('itemAsignacion').getElementsByTagName('*')[0].appendChild(texto);
+                    
 
-                        success: function(resp){
-                             $("#alarma").text(resp);                         
-                            },
-                        error: function(xhr){
-    //                    alert("failure"+xhr.readyState+this.url)
-                        }
-                      });
-
-                }
-                function contarPREAlarmas() {
-                    $.ajax({
-                        type: "POST",
-                        url:    '<?php echo Yii::app()->createUrl('site/ContarPREAlarmas'); ?>',
-    //                    data:  {val1:1,val2:2},
-
-                        success: function(resp){
-                             $("#PREalarma").text(resp);                         
-                            },
-                        error: function(xhr){
-    //                    alert("failure"+xhr.readyState+this.url)
-                        }
-                      });
-
-                }
-                 function asignarCantAlarmas() {
-                    var cantAlarmas = $("#alarma").html();
-                    var cantPREAlarmas = $("#PREalarma").html();
-                    document.cookie = 'Alarma (' + cantAlarmas + ' / ' + cantPREAlarmas + ')';
-    //                $("#itemAlarma").html('Alarma (' + cantAlarmas + ' / ' + cantPREAlarmas + ')');
-
-                }
-
+                }               
           </script>
-
+          
+          
             
-
-            
-                <?php  
+                <?php   
                     $this->widget(
                             'booster.widgets.TbNavbar', array(
                         'type' => 'inverse',
@@ -284,7 +289,8 @@
                                         'label' => 'Alarmas asigandas (' . count($asiganciones) . ')',
                                         'icon'=>'download-alt',
                                         'url' => Yii::app()->homeUrl . 'asignarinspector/index',
-                                        'visible' => !Yii::app()->user->isGuest
+                                        'visible' => !Yii::app()->user->isGuest,
+                                        'itemOptions'=>array('id' => 'itemAsignacion')
                                     ),
 
                                     array(
@@ -369,6 +375,8 @@
     
    <script src="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap/js/jquery.js"></script>
     <script src="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap/js/bootstrap.min.js"></script>             
+    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/navbar.js"></script>             
+    
                 
                 </body>
                 </html>

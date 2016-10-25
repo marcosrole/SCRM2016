@@ -128,14 +128,15 @@ Yii::app()->clientScript->registerScript('dropdown', '
                             array(
                                 'class' => 'booster.widgets.TbButtonColumn',
                                // 'htmlOptions' => array('width' => '10'), //ancho de la columna
-                                'template' => '{permisos}   {semanasLaborales} ', // botones a mostrar
+                                //'template' => '{permisos}   {semanasLaborales} ', // botones a mostrar
+                                'template' => '{permisos}   ', // botones a mostrar
                                 'buttons' => array(
-                                    'semanasLaborales' => array
+                                    /*'semanasLaborales' => array
                                     (
                                         'label'=>'Dias Laborales',
                                         'icon'=>'glyphicon glyphicon-calendar',                                                                               
                                         'url'=> 'Yii::app()->createUrl("semanatrabajo/view", array("id_usr"=> ' . '$data["id"])) ',
-                                    ),                                                            
+                                    ),*/                                                            
                                     'permisos' => array
                                     (
                                         'label'=>'Permisos en el Sistema',

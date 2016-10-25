@@ -12,7 +12,7 @@
  * @property string $fechahs
  * @property integer $timeOutEspera
  * @property integer $preAlarma
- * @property integer $asignada
+ * @property string $minutosAdicional
  *
  * The followings are the available model relations:
  * @property Acta[] $actas
@@ -40,11 +40,11 @@ class Alarma extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('id_tipAla', 'required'),
-			array('solucionado, enviarSMS, id_tipAla, id_dis, timeOutEspera, preAlarma, asignada', 'numerical', 'integerOnly'=>true),
-			array('fechahs', 'safe'),
+			array('solucionado, enviarSMS, id_tipAla, id_dis, timeOutEspera, preAlarma', 'numerical', 'integerOnly'=>true),
+			array('fechahs, minutosAdicional', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, solucionado, enviarSMS, id_tipAla, id_dis, fechahs, timeOutEspera, preAlarma, asignada', 'safe', 'on'=>'search'),
+			array('id, solucionado, enviarSMS, id_tipAla, id_dis, fechahs, timeOutEspera, preAlarma, minutosAdicional', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,7 +78,7 @@ class Alarma extends CActiveRecord
 			'fechahs' => 'Fechahs',
 			'timeOutEspera' => 'Time Out Espera',
 			'preAlarma' => 'Pre Alarma',
-			'asignada' => 'Asignada',
+			'minutosAdicional' => 'Minutos Adicional',
 		);
 	}
 
@@ -108,7 +108,7 @@ class Alarma extends CActiveRecord
 		$criteria->compare('fechahs',$this->fechahs,true);
 		$criteria->compare('timeOutEspera',$this->timeOutEspera);
 		$criteria->compare('preAlarma',$this->preAlarma);
-		$criteria->compare('asignada',$this->asignada);
+		$criteria->compare('minutosAdicional',$this->minutosAdicional,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

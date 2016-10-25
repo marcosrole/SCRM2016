@@ -21,8 +21,7 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Nivelesmenu */
 
 $this->breadcrumbs=array(
-	'Nivelesmenus'=>array('index'),
-	'Manage',
+	'Administrar menues',
 );
 
 $this->menu=array(	

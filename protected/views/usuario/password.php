@@ -30,9 +30,9 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $model Usuario */
 
 $this->breadcrumbs=array(
-//	'Usuarios'=>array('index'),
-//	$usuario->name=>array('view','id'=>$usuario->id),
-//	'Update',
+	'Usuarios'=>array('index'),
+        'Modificar Usuarios'=>array('admin'),
+	'Modificar Contraseña',
 );
 
 $this->menu=array(

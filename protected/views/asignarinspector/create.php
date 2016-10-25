@@ -19,8 +19,7 @@ $this->widget('booster.widgets.TbAlert', array(
 /* @var $dataInspectores DatosInspecores */
 
 $this->breadcrumbs=array(
-	'Asignarinspectors'=>array('index'),
-	'Create',
+	'Asignación de Inspectores',
 );
 
 $this->menu=array(

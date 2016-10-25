@@ -1,4 +1,6 @@
- <style>    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style>    
     .jumbotron {
     position: relative;
     //background: #000 url("jumbotron-bg.png") center center;
@@ -11,12 +13,9 @@
     border-radius: 69px 69px 69px 69px;
     -moz-border-radius: 69px 69px 69px 69px;
     -webkit-border-radius: 69px 69px 69px 69px;
-    border: 3px solid #4b6094;
-    
-    background: url("images/SCRMTitulo.png") center center;
-    background-position: 10% 50%;
-    background-size: 50%;
-    background-repeat: no-repeat;
+    border: 3px solid #4b6094;   
+    background-color: white;
+   
 }
 
     .formulario{
@@ -25,26 +24,30 @@
         height: 90%;
     }
     
-    .jumbotron.imgLogeado{
-        background: url("images/SCRMTitulo.png") center center;
-        background-position: 10% 50%;
-        background-size: 50%;
-        background-repeat: no-repeat;
-    }
-    
-    .jumbotron.imgNoLogeado{
-        background: url("images/SCRMTitulo.png") center center;
-        background-position: 10% 50%;
-        background-size: 50%;
-        background-repeat: no-repeat;
-    }
+    .jumbotron img{
+        width: 50%;
+	position:absolute;
+        right: 44%;
+        top: 20%;
+	
+   }
+     .imgLogeado img {
+	width: 60%;
+	position:absolute;
+	left:16%;
+        top: 25%;
+	}
     
 </style>
    
  
-<div class="jumbotron">             
-            <?php if(!$welcome && Yii::app()->user->isGuest){ ?>
-            <div class="imgNoLogeado">                 
+<div class="jumbotron">  
+     <div class="imgLogeado">
+                
+            </div>
+            <?php if(!$welcome && Yii::app()->user->isGuest){ ?> 
+            <div class="imgNoLogeado">  
+                <img src="images/SCRMTitulo.png" class="img-responsive" >
                 <div class="formulario">
                     <?php $this->renderPartial(
                             'login',
@@ -57,8 +60,13 @@
                 </div>                
             </div>
             <div class="imgLogeado">
-                
+                <img src="images/SCRMTitulo.png" class="img-responsive" >                
             </div>
              <?php }  ?>
 </div>  
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
